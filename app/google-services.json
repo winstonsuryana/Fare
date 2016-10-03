@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "38409701729",
+    "firebase_url": "https://fareshare-c5d44.firebaseio.com",
+    "project_id": "fareshare-c5d44",
+    "storage_bucket": "fareshare-c5d44.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38409701729:android:c1f5a6be8ec917a6",
+        "android_client_info": {
+          "package_name": "com.example.winston.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "38409701729-7j8evoim1ju4t3uoojhtigesbdjii1sd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.winston.myapplication",
+            "certificate_hash": "4EDF43AFEDF46C7FD3A5A9A78264BE85DBB87E1C"
+          }
+        },
+        {
+          "client_id": "38409701729-7e9lp6d6dijdip8l5e7u2rhh9fgrrad4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7vtWngDSuAG4w2eLYZIfplQbhaDbLlIM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "38409701729-vi910hfp5jt1kej7v5148gk9juvqe8ip.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "share.fareshare"
+              }
+            },
+            {
+              "client_id": "38409701729-7e9lp6d6dijdip8l5e7u2rhh9fgrrad4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
