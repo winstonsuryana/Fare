@@ -72,7 +72,7 @@ public class HistoryActivity extends AppCompatActivity{
         for (int index = 0; index < 20; index++) {
             String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             Float amount = new Float(0.00);
-            DataObject obj = new DataObject("Resturant " + index , "John Doe", amount, date);
+            DataObject obj = new DataObject("Restaurant " + index , "John Doe", amount, date);
             results.add(index, obj);
         }
         return results;
@@ -124,7 +124,7 @@ class HistoryCardAdapter extends RecyclerView.Adapter<HistoryCardAdapter.DataObj
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-        holder.label.setText(mDataset.get(position).getResturantName());
+        holder.label.setText(mDataset.get(position).getRestaurantName());
         holder.dateTime.setText(mDataset.get(position).getPaidBy());
         holder.dateTime.setText(mDataset.get(position).getDateValue());
         //holder.label.setText((int) mDataset.get(position).getAmount());
@@ -155,21 +155,21 @@ class HistoryCardAdapter extends RecyclerView.Adapter<HistoryCardAdapter.DataObj
     Database information can be retrieved in the future using the code below.
  */
 class DataObject {
-    public String resturantName;
+    public String restaurantName;
     public String paidBy;
     public float amount;
     public String dateValue;
 
-    DataObject (String Resturant, String paidBy, float amount, String dateValue){
-        resturantName = Resturant;
+    DataObject (String restaurant, String paidBy, float amount, String dateValue){
+        restaurantName = restaurant;
         paidBy = paidBy;
         amount = amount;
         dateValue = dateValue;
 
     }
 
-    public void setResturantName(String resturantName) {
-        this.resturantName = resturantName;
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
     }
 
     public void setPaidby(String paidBy){
@@ -182,8 +182,8 @@ class DataObject {
     public void setDateValue(String dateValue){
         this.dateValue = dateValue;
     }
-    public String getResturantName(){
-        return resturantName;
+    public String getRestaurantName(){
+        return restaurantName;
     }
     public String getPaidBy() {
         return paidBy;
