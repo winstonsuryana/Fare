@@ -12,8 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Date;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,15 +19,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import static android.R.attr.value;
-
 /*
 Currently this screen is used only for test purpose. The largest risk exposure of this project was establishing database
-connectivity. The HomeScreenActivity allows the user to push information to the database and can be successfully seen in the databse.
+connectivity. The LogInformation allows the user to push information to the database and can be successfully seen in the databse.
 The user does not currently have a method to view the entries in the database. Will be implemented during iteration 2.
  */
-public class HomeScreenActivity extends AppCompatActivity {
-    private static final String TAG = HomeScreenActivity.class.getSimpleName();
+public class LogInformation extends AppCompatActivity {
+    private static final String TAG = LogInformation.class.getSimpleName();
 
     //Global Variables
     Button button;
@@ -40,7 +36,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_screen);
+        setContentView(R.layout.activity_loginfo_screen);
         button = (Button)findViewById(R.id.pushtodb);
         amount = (EditText) findViewById(R.id.moneySpent);
         Bundle extras = getIntent().getExtras();
@@ -55,7 +51,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 Snackbar.make(view, "HistoryActivity...", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                Intent historyIntent = new Intent(HomeScreenActivity.this, HistoryActivity.class);
+                Intent historyIntent = new Intent(LogInformation.this, HistoryActivity.class);
                 startActivity(historyIntent);
             }
         });
