@@ -75,6 +75,8 @@ public class LogInformation extends AppCompatActivity {
         });
     }
 
+    
+
     /*
      *Test method to send to database
       * currently it will send any information placed

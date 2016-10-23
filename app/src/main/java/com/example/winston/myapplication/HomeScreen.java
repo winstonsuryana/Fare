@@ -33,14 +33,18 @@ public class HomeScreen extends AppCompatActivity {
     private ListAdapter mTransListAdapter;
     ListView mTransListView;
     String TAG = "HomeScreen";
+    String email;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
+        Bundle extras = getIntent().getExtras();
+        email = extras.getString("user");
+        mTransactions = new ArrayList<>();
         Transaction transaction1 = new Transaction("McDonalds", "10/10/2016", "Payee1", "$47.72");
         Transaction transaction2 = new Transaction("Wendy's", "12/30/2016", "Payee2", "$34.50");
 
@@ -48,17 +52,17 @@ public class HomeScreen extends AppCompatActivity {
         //Q$@#^%#$@^#$%^@#$%^#$^#$
         //make this thing work...
         // null object blah blah.
-        Log.d(TAG, "onCreate: " + transaction1.toString());
-//        mTransactions.add(transaction1);
-//        mTransactions.add(transaction2);
-//        mTransactions.add(transaction1);
-//        mTransactions.add(transaction2);
-//        mTransactions.add(transaction1);
-//        mTransactions.add(transaction2);
-//        mTransactions.add(transaction1);
-//        mTransactions.add(transaction2);
-//        mTransactions.add(transaction1);
-//        mTransactions.add(transaction2);
+        Log.d(TAG, "onCreate: " + transaction1.getCost());
+        mTransactions.add(transaction1);
+        mTransactions.add(transaction2);
+        mTransactions.add(transaction1);
+        mTransactions.add(transaction2);
+        mTransactions.add(transaction1);
+        mTransactions.add(transaction2);
+        mTransactions.add(transaction1);
+        mTransactions.add(transaction2);
+        mTransactions.add(transaction1);
+        mTransactions.add(transaction2);
 
         mTransListAdapter = new TransactionAdapter(HomeScreen.this, mTransactions);
         mTransListView = (ListView) findViewById(R.id.RecentListView);
@@ -96,8 +100,7 @@ public class HomeScreen extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("ahh", "onClick: " + "fab");
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                LogActivity();
             }
         });
     }
@@ -123,6 +126,13 @@ public class HomeScreen extends AppCompatActivity {
         public String getName2(){
             return name2;
         }
+    }
+
+    public void LogActivity(){
+        Intent i = new Intent(this, LogInformation.class);
+        i.putExtra("user",email);
+        startActivity(i);
+
     }
 
 }

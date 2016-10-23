@@ -6,12 +6,14 @@
     android:layout_height="wrap_content"
     card_view:cardUseCompatPadding="true"
     card_view:cardElevation="4dp"
+    android:padding="-10dp"
     android:id="@+id/Details_Card">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:padding="-10dp"
         >
 
         <!-- User avatar -->
@@ -20,13 +22,13 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="3">
+            android:weightSum="4">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
-                android:layout_weight="1">
+                android:layout_weight="2">
 
 
                 <TextView
