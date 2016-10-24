@@ -3,23 +3,20 @@ package com.example.winston.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -103,6 +100,26 @@ public class HomeScreen extends AppCompatActivity {
                 LogActivity();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+            case R.id.action_history:
+                Intent i = new Intent(this, HistoryActivity.class);
+                startActivity(i);
+                return true;
+            case R.id.action_settings:
+                Log.d(TAG, "onOptionsItemSelected: ");
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public class WebAppInterface {

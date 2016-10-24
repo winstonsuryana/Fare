@@ -13,7 +13,8 @@
         android:minHeight="?attr/actionBarSize"
         android:id="@+id/toolbar5"
         android:layout_alignParentEnd="true"
-        app:title="History" />
+        app:title="History"
+        />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"

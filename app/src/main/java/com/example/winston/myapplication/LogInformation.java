@@ -30,6 +30,8 @@ public class LogInformation extends AppCompatActivity {
     //Global Variables
     Button button;
     EditText amount;
+    EditText location;
+    EditText paidby;
     FirebaseDatabase database;
     String UUID;
 
@@ -39,6 +41,8 @@ public class LogInformation extends AppCompatActivity {
         setContentView(R.layout.activity_loginfo_screen);
         button = (Button)findViewById(R.id.pushtodb);
         amount = (EditText) findViewById(R.id.moneySpent);
+        location = (EditText) findViewById(R.id.location);
+        paidby = (EditText) findViewById(R.id.payee);
         Bundle extras = getIntent().getExtras();
         String email = extras.getString("user");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -90,36 +94,14 @@ public class LogInformation extends AppCompatActivity {
         //UUID -> Time Stamps -> Values
         long time = date.getTime();
         //if(){
-        DatabaseReference myRef = database.getReference(UUID + "/" + time);
+        DatabaseReference myRef = database.getReference(UUID + "/" + time + "/" + "Amount");
         myRef.setValue( amount.getText().toString());
+        DatabaseReference locationRef = database.getReference(UUID + "/" + time + "/" + "Location");
+        locationRef.setValue( location.getText().toString() );
+        DatabaseReference PayerRef = database.getReference(UUID + "/" + time + "/" + "PaidBy");
+        PayerRef.setValue( paidby.getText().toString() );
     }
 
 
-    /*
-     *Prevents back button from returning to log on screen.
-      * If held long enough it will allow the app to minimize.
-     */
-    long backPressedAt = System.currentTimeMillis();
-    int backPressCount = 0;
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            final long currentTime = System.currentTimeMillis();
-            if (currentTime- backPressedAt < 888)
-            {
-                backPressCount++;
-            }
-            else
-            {
-                backPressCount = 0;
-            }
-            backPressedAt = currentTime;
-            if(backPressCount == 2)
-            {
-                return super.onKeyDown(keyCode, event);
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
 }

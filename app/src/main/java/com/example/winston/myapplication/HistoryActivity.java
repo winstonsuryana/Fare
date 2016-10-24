@@ -1,8 +1,10 @@
 package com.example.winston.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.style.TtsSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -77,6 +81,24 @@ public class HistoryActivity extends AppCompatActivity{
         }
         return results;
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_history, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }
 
 class HistoryCardAdapter extends RecyclerView.Adapter<HistoryCardAdapter.DataObjectHolder> {
@@ -124,11 +146,13 @@ class HistoryCardAdapter extends RecyclerView.Adapter<HistoryCardAdapter.DataObj
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-        holder.label.setText(mDataset.get(position).getRestaurantName());
-        holder.dateTime.setText(mDataset.get(position).getPaidBy());
-        holder.dateTime.setText(mDataset.get(position).getDateValue());
+//        holder.label.setText(mDataset.get(position).getRestaurantName());
+//        holder.dateTime.setText(mDataset.get(position).getPaidBy());
+//        holder.dateTime.setText(mDataset.get(position).getDateValue());
         //holder.label.setText((int) mDataset.get(position).getAmount());
         //holder.dateTime.setText(mDataset.get(position).getPaidBy());
+//        holder.label.setText("asdfa");
+//        holder.dateTime.setText("ASDFASDf");
     }
 
     public void addItem(DataObject dataObj, int index) {

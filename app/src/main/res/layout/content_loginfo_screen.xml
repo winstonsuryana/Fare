@@ -13,36 +13,80 @@
     tools:context="com.example.winston.myapplication.LogInformation"
     tools:showIn="@layout/activity_loginfo_screen">
 
+    <TextView
+    android:text="Location"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/textView2"
+    android:layout_marginTop="20dp"
+    android:layout_alignParentLeft="true" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:hint="Amount Spent"
-        android:ems="10"
-        android:layout_marginTop="69dp"
-        android:id="@+id/moneySpent"
+        android:layout_marginTop="10dp"
+        android:id="@+id/location"
+        android:maxLines="1"
+        android:inputType="text"
         android:gravity="center_vertical|center_horizontal"
         android:layout_below="@+id/textView2"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"/>
+
+    <TextView
+        android:text="Cost"
+        android:layout_below="@id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/cost"
+        android:layout_alignParentLeft="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:layout_marginTop="10dp"
+        android:id="@+id/moneySpent"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_below="@+id/cost"
+        android:layout_alignParentLeft="true"/>
+
+    <TextView
+        android:text="Paid by"
+        android:layout_below="@id/moneySpent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/payer"
+        android:layout_alignParentLeft="true"
 
         />
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:inputType="numberDecimal"
+        android:layout_marginTop="10dp"
+        android:id="@+id/payee"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_below="@+id/payer"
+        android:layout_alignParentLeft="true"/>
+
+
+
+
+
     <Button
         android:text="Push to database"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="54dp"
+        android:layout_marginTop="20dp"
         android:id="@+id/pushtodb"
-        android:layout_below="@+id/moneySpent"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/payee"
+        android:layout_alignParentLeft="true"
+        />
 
-    <TextView
-        android:text="Test Database"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:layout_marginTop="71dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
