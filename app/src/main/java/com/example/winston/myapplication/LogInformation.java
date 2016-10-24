@@ -94,10 +94,10 @@ public class LogInformation extends AppCompatActivity {
         //UUID -> Time Stamps -> Values
         long time = date.getTime();
         //if(){
-        DatabaseReference myRef = database.getReference(UUID + "/" + time + "/" + "Amount");
-        myRef.setValue( amount.getText().toString());
         DatabaseReference locationRef = database.getReference(UUID + "/" + time + "/" + "Location");
         locationRef.setValue( location.getText().toString() );
+        DatabaseReference myRef = database.getReference(UUID + "/" + time + "/" + "Amount");
+        myRef.setValue( amount.getText().toString());
         DatabaseReference PayerRef = database.getReference(UUID + "/" + time + "/" + "PaidBy");
         PayerRef.setValue( paidby.getText().toString() );
     }
