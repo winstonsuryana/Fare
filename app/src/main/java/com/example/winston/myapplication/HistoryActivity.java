@@ -56,6 +56,10 @@ public class HistoryActivity extends AppCompatActivity{
 
         // Code to remove an item with default animation
         //((MyRecyclerViewAdapter) mAdapter).deleteItem(index);
+
+
+
+
     }
 
 
@@ -73,7 +77,7 @@ public class HistoryActivity extends AppCompatActivity{
 
     private ArrayList<DataObject> getDataSet() {
         ArrayList results = new ArrayList<DataObject>();
-        for (int index = 0; index < 20; index++) {
+        for (int index = 0; index < 2; index++) {
             String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             Float amount = new Float(0.00);
             DataObject obj = new DataObject("Restaurant " + index , "John Doe", amount, date);

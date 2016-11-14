@@ -13,6 +13,11 @@ import java.util.ArrayList;
  * Created by Winston on 10/16/2016.
  */
 
+/**
+ * This adapter takes a list of items and passes passes the information as cards
+ * to a listview
+ *
+ */
 public class TransactionAdapter extends ArrayAdapter<Transaction>{
     public TransactionAdapter(Context context, ArrayList<Transaction> itemName) {
         super(context, R.layout.card_view_row, itemName);

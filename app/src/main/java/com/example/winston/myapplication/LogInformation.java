@@ -94,6 +94,9 @@ public class LogInformation extends AppCompatActivity {
         //UUID -> Time Stamps -> Values
         long time = date.getTime();
         //if(){
+
+
+
         DatabaseReference locationRef = database.getReference(UUID + "/" + time + "/" + "Location");
         locationRef.setValue( location.getText().toString() );
         DatabaseReference myRef = database.getReference(UUID + "/" + time + "/" + "Amount");

@@ -18,8 +18,34 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+import static com.example.winston.myapplication.R.id.login;
+import static com.example.winston.myapplication.R.id.time;
+
+
+/**
+ * HomeScreen is the class which is provided after the user has logged in with correct credentials
+ * This class will display recent activities and a pie chart for the purchases made.
+ * The user can traverse the application, allowing them to add transactions or view historical
+ * transactions
+ */
 @SuppressLint("SetJavaScriptEnabled")
 public class HomeScreen extends AppCompatActivity {
 
@@ -31,6 +57,11 @@ public class HomeScreen extends AppCompatActivity {
     ListView mTransListView;
     String TAG = "HomeScreen";
     String email;
+    String UUID;
+    String Amount;
+    String timestamp;
+    String Location;
+    String Paidby;
 
 
     @Override
@@ -41,45 +72,93 @@ public class HomeScreen extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Bundle extras = getIntent().getExtras();
         email = extras.getString("user");
-        mTransactions = new ArrayList<>();
+
         Transaction transaction1 = new Transaction("McDonalds", "10/10/2016", "Payee1", "$47.72");
         Transaction transaction2 = new Transaction("Wendy's", "12/30/2016", "Payee2", "$34.50");
 
 
-        //Q$@#^%#$@^#$%^@#$%^#$^#$
-        //make this thing work...
-        // null object blah blah.
-        Log.d(TAG, "onCreate: " + transaction1.getCost());
-        mTransactions.add(transaction1);
-        mTransactions.add(transaction2);
-        mTransactions.add(transaction1);
-        mTransactions.add(transaction2);
-        mTransactions.add(transaction1);
-        mTransactions.add(transaction2);
-        mTransactions.add(transaction1);
-        mTransactions.add(transaction2);
-        mTransactions.add(transaction1);
-        mTransactions.add(transaction2);
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        UUID = user.getUid();
+        Log.d(TAG, "onCreate: uuid"  + UUID);
+        DatabaseReference ref = database.getReference(UUID);
 
-        mTransListAdapter = new TransactionAdapter(HomeScreen.this, mTransactions);
-        mTransListView = (ListView) findViewById(R.id.RecentListView);
-        mTransListView.setAdapter(mTransListAdapter);
-
-
-
-        mTransListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // Attach a listener to read the data at our posts reference
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mTransactions = new ArrayList<>();
+//                Log.d(TAG, "onDataChange: "+ dataSnapshot.getValue().toString());
+
+                dataSnapshot.getChildren();
+                for( DataSnapshot message: dataSnapshot.getChildren()){
+
+                    timestamp = message.getKey();
+                    try {
+                        Amount = message.child("Amount").getValue().toString();
+                        Paidby = message.child("PaidBy").getValue().toString();
+                        Location = message.child("Location").getValue().toString();
+                    }
+                    catch(NullPointerException e){
+                        e.printStackTrace();
+                    }
+                    Date date  = new Date();
+                    date.setTime(Long.parseLong(timestamp));
+                    mTransactions.add( new Transaction(Location,date.toString(), Paidby, Amount));
+
+
+
+                }
+//                if(dataSnapshot.getValue() != null) {
+//                    parseJSON(dataSnapshot.getValue().toString());
+//                }
+
+                Collections.reverse(mTransactions);
+                mTransListAdapter = new TransactionAdapter(HomeScreen.this, mTransactions);
+                mTransListView = (ListView) findViewById(R.id.RecentListView);
+                mTransListView.setAdapter(mTransListAdapter);
+
+                mTransListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
 //                Transaction item = (Transaction) parent.getItemAtPosition(position);
 //                Intent i = new Intent(HomeScreen.this, TransactionDetails.class);
 //                i.putExtra("name", item.getCompany());
 //                i.putExtra("ticker", item.getTicker());
 //                startActivity(i);
 
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
             }
         });
 
 
+
+        //This is hard coded information that will be replaced during iteration 3 with information from the database
+
+//        mTransactions.add(transaction1);
+//        mTransactions.add(transaction2);
+//        mTransactions.add(transaction1);
+//        mTransactions.add(transaction2);
+//        mTransactions.add(transaction1);
+//        mTransactions.add(transaction2);
+//        mTransactions.add(transaction1);
+//        mTransactions.add(transaction2);
+//        mTransactions.add(transaction1);
+//        mTransactions.add(transaction2);
+
+
+
+        //When the selecting the item it will allow the user to change the information on the card
+        //Currently pressing on a card does has no action
+
+
+        //these names will be fetched when rendering the graph
         num1 = 1;
         num2 = 1;
         name1 = "name1";
@@ -122,6 +201,10 @@ public class HomeScreen extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    /**
+     * Allows for the javascript display of the piechart
+     */
     public class WebAppInterface {
 
         @JavascriptInterface
@@ -151,5 +234,27 @@ public class HomeScreen extends AppCompatActivity {
         startActivity(i);
 
     }
+
+    public void parseJSON(String data){
+
+        StringTokenizer st = new StringTokenizer(data, "}");
+        while(st.hasMoreTokens()){
+            //Log.d(TAG, "parseJSON: "+ st.nextToken());
+            StringTokenizer nexttoken = new StringTokenizer(st.nextToken(),"=");
+            while(nexttoken.hasMoreTokens()){
+                Log.d(TAG, "\tparseJSON: " + nexttoken.nextToken());
+                int i = 0;
+                String token = nexttoken.nextToken();
+                while( i < token.length() ){
+                    Log.d(TAG, "parseJSON: " + token.charAt(i) );
+                }
+
+            }
+        }
+
+
+
+    }
+
 
 }
