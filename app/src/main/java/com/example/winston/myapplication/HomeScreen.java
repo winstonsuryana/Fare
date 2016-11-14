@@ -3,6 +3,7 @@ package com.example.winston.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -34,8 +35,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.StringTokenizer;
 
+import static com.example.winston.myapplication.R.id.Suggestion;
 import static com.example.winston.myapplication.R.id.login;
 import static com.example.winston.myapplication.R.id.time;
 
@@ -62,6 +65,8 @@ public class HomeScreen extends AppCompatActivity {
     String timestamp;
     String Location;
     String Paidby;
+    String Type;
+    String Transaction;
 
 
     @Override
@@ -73,14 +78,14 @@ public class HomeScreen extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         email = extras.getString("user");
 
-        Transaction transaction1 = new Transaction("McDonalds", "10/10/2016", "Payee1", "$47.72");
-        Transaction transaction2 = new Transaction("Wendy's", "12/30/2016", "Payee2", "$34.50");
+//        Transaction transaction1 = new Transaction("McDonalds", "10/10/2016", "Payee1", "$47.72");
+//        Transaction transaction2 = new Transaction("Wendy's", "12/30/2016", "Payee2", "$34.50");
 
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         UUID = user.getUid();
-        Log.d(TAG, "onCreate: uuid"  + UUID);
+//        Log.d(TAG, "onCreate: uuid"  + UUID);
         DatabaseReference ref = database.getReference(UUID);
 
         // Attach a listener to read the data at our posts reference
@@ -95,16 +100,19 @@ public class HomeScreen extends AppCompatActivity {
 
                     timestamp = message.getKey();
                     try {
+
                         Amount = message.child("Amount").getValue().toString();
                         Paidby = message.child("PaidBy").getValue().toString();
                         Location = message.child("Location").getValue().toString();
+                        Type = message.child("Type").getValue().toString();
                     }
                     catch(NullPointerException e){
                         e.printStackTrace();
                     }
                     Date date  = new Date();
                     date.setTime(Long.parseLong(timestamp));
-                    mTransactions.add( new Transaction(Location,date.toString(), Paidby, Amount));
+                    Log.d(TAG, "onDataChange: " + timestamp);
+                    mTransactions.add( new Transaction(timestamp.toString(), Location,date.toString(), Paidby, Amount, Type));
 
 
 
@@ -121,12 +129,17 @@ public class HomeScreen extends AppCompatActivity {
                 mTransListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
-//                Transaction item = (Transaction) parent.getItemAtPosition(position);
-//                Intent i = new Intent(HomeScreen.this, TransactionDetails.class);
-//                i.putExtra("name", item.getCompany());
-//                i.putExtra("ticker", item.getTicker());
-//                startActivity(i);
+                        Transaction item = (Transaction) parent.getItemAtPosition(position);
+                        Intent i = new Intent(HomeScreen.this, EditInformation.class);
+                        Log.d(TAG, "onItemClick: " + item.getTransaction());
 
+                        i.putExtra("transaction", item.getTransaction());
+                        i.putExtra("company", item.getCompany());
+                        i.putExtra("date", item.getDate());
+                        i.putExtra("paidby", item.getName());
+                        i.putExtra("type", item.getType());
+                        i.putExtra("cost", item.getCost());
+                        startActivity(i);
                     }
                 });
             }
@@ -195,6 +208,11 @@ public class HomeScreen extends AppCompatActivity {
                 return true;
             case R.id.action_settings:
                 Log.d(TAG, "onOptionsItemSelected: ");
+                return true;
+            case R.id.Suggestion:
+                Log.d(TAG, "onOptionsItemSelected: Suggestion");
+                getSuggestion();
+                return true;
 
         }
 
@@ -202,6 +220,28 @@ public class HomeScreen extends AppCompatActivity {
     }
 
 
+
+    public void getSuggestion(){
+        Random randomizer = new Random();
+        ArrayList<Transaction> suggestion = new ArrayList<>();
+        for(int i = 0; i < mTransactions.size(); i++){
+            Log.d(TAG, "getSuggestion: " + mTransactions.get(i).getType() );
+            if(mTransactions.get(i).getType().equals("Food")){
+                suggestion.add(mTransactions.get(i));
+                Log.d(TAG, "getSuggestion: " + suggestion.size());
+            }
+        }
+
+        if(suggestion.size() == 0){
+            new AlertDialog.Builder(this).setTitle("Error").setMessage("There are no restaurants to choose from.").setNeutralButton("Close", null).show();
+            return;
+        }
+        int randint = randomizer.nextInt() % suggestion.size();
+        String random = suggestion.get(randint).getCompany();
+
+        new AlertDialog.Builder(this).setTitle("Random Recommendation").setMessage(random).setNeutralButton("Close", null).show();
+
+    }
     /**
      * Allows for the javascript display of the piechart
      */

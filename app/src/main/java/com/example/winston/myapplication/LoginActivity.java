@@ -34,7 +34,6 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
 

@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,21 +16,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-/*
-Currently this screen is used only for test purpose. The largest risk exposure of this project was establishing database
-connectivity. The LogInformation allows the user to push information to the database and can be successfully seen in the databse.
-The user does not currently have a method to view the entries in the database. Will be implemented during iteration 2.
- */
-public class LogInformation extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class EditInformation  extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     private static final String TAG = LogInformation.class.getSimpleName();
 
     //Global Variables
@@ -43,34 +36,59 @@ public class LogInformation extends AppCompatActivity implements AdapterView.OnI
     FirebaseDatabase database;
     String UUID;
     Spinner spinner;
+    String transaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loginfo_screen);
-        button = (Button)findViewById(R.id.pushtodb);
-        amount = (EditText) findViewById(R.id.moneySpent);
-        location = (EditText) findViewById(R.id.location);
-        paidby = (EditText) findViewById(R.id.payee);
-        Bundle extras = getIntent().getExtras();
-        String email = extras.getString("user");
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        Log.d(TAG, "onCreate: " + email);
-        Log.d(TAG, "onCreate: ");
         spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
-
         List<String> categories = new ArrayList<>();
         categories.add("Food");
         categories.add("Home Goods");
         categories.add("Groceries");
         categories.add("Loan");
         categories.add("Other");
+        button = (Button)findViewById(R.id.pushtodb);
+        amount = (EditText) findViewById(R.id.moneySpent);
+        location = (EditText) findViewById(R.id.location);
+        paidby = (EditText) findViewById(R.id.payee);
+        Bundle extras = getIntent().getExtras();
+        transaction = extras.getString("transaction");
+        Log.d(TAG, "onCreate: tx" + transaction);
+        String company = extras.getString("company");
+        String date = extras.getString("date");
+        String paidbytext = extras.getString("paidby");
+        String type = extras.getString("type");
+        String cost = extras.getString("cost");
+        amount.setText(cost);
+        Log.d(TAG, "onCreate:1 " + company);
+        location.setText(company);
+        paidby.setText(paidbytext);
+
+
+
+
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+//        Log.d(TAG, "onCreate: " + email);
+        Log.d(TAG, "onCreate: ");
+
+
+
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
+        ArrayAdapter myAdap = (ArrayAdapter) spinner.getAdapter(); //cast to an ArrayAdapter
+
+        int spinnerPosition = myAdap.getPosition(type);
+
+        //set the default according to value
+        spinner.setSelection(spinnerPosition);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +96,7 @@ public class LogInformation extends AppCompatActivity implements AdapterView.OnI
             public void onClick(View view) {
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 Snackbar.make(view, "HistoryActivity...", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                Intent historyIntent = new Intent(LogInformation.this, HistoryActivity.class);
+                Intent historyIntent = new Intent(EditInformation.this, HistoryActivity.class);
                 startActivity(historyIntent);
             }
         });
@@ -127,23 +145,23 @@ public class LogInformation extends AppCompatActivity implements AdapterView.OnI
         Date date = new Date();
         //The UUID is the table name and uses the timestamp to differentiate entries
         //UUID -> Time Stamps -> Values
-        long time = date.getTime();
+        //long time = date.getTime();
         //if(){
 
 
 
-        DatabaseReference locationRef = database.getReference(UUID + "/" + time + "/" + "Location");
+        DatabaseReference locationRef = database.getReference(UUID + "/" + transaction + "/" + "Location");
         locationRef.setValue( location.getText().toString() );
-        DatabaseReference myRef = database.getReference(UUID + "/" + time + "/" + "Amount");
+        Log.d(TAG, "sendToDatabase: " + transaction);
+        DatabaseReference myRef = database.getReference(UUID + "/" + transaction + "/" + "Amount");
         myRef.setValue( amount.getText().toString());
-        DatabaseReference PayerRef = database.getReference(UUID + "/" + time + "/" + "PaidBy");
+
+        DatabaseReference PayerRef = database.getReference(UUID + "/" + transaction + "/" + "PaidBy");
         PayerRef.setValue( paidby.getText().toString() );
-        DatabaseReference TypeRef = database.getReference(UUID + "/" + time + "/" + "Type");
+        DatabaseReference TypeRef = database.getReference(UUID + "/" + transaction + "/" + "Type");
         TypeRef.setValue( spinner.getSelectedItem().toString());
         Toast.makeText(  context ,"Entry Successful", Toast.LENGTH_LONG).show();
         finish();
     }
-
-
 
 }

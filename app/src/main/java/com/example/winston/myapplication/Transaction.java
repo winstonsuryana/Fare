@@ -11,7 +11,7 @@ package com.example.winston.myapplication;
  *
  */
 public class Transaction {
-    private Transaction transaction;
+    private String transaction;
     //The name or location of where money was spent
     private String company;
     //The date of the transaction
@@ -20,12 +20,16 @@ public class Transaction {
     private String name;
     //The actual cost of the transaction
     private String cost;
+    //Type of transaction taking place
+    private String type;
 
-    public Transaction(String company, String date, String name, String cost) {
+    public Transaction(String transaction, String company, String date, String name, String cost, String type) {
+        this.transaction = transaction;
         this.company = company;
         this.date = date;
         this.name = name;
         this.cost = cost;
+        this.type = type;
     }
 
 
@@ -33,11 +37,11 @@ public class Transaction {
         return company;
     }
 
-    public Transaction getTransaction() {
+    public String getTransaction() {
         return transaction;
     }
 
-    public void setTransaction(Transaction transaction) {
+    public void setTransaction(String transaction) {
         this.transaction = transaction;
     }
 
@@ -68,4 +72,9 @@ public class Transaction {
     public void setCost(String cost) {
         this.cost = cost;
     }
+
+    public void setType(String type){ this.type = type;}
+
+    public String getType(){ return type;}
+
 }

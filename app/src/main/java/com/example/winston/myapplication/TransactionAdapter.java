@@ -39,7 +39,7 @@ public class TransactionAdapter extends ArrayAdapter<Transaction>{
         company.setText(transaction.getCompany());
         date.setText(transaction.getDate());
         payer.setText(transaction.getName());
-        cost.setText(transaction.getCost());
+        cost.setText("$"+ transaction.getCost());
 
         return customView;
     }
