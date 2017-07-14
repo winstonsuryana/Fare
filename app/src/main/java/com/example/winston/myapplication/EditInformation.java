@@ -1,5 +1,4 @@
 package com.example.winston.myapplication;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
